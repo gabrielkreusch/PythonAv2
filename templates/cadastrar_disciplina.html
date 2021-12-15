@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de pessoas</title>
+</head>
+
+<body>
+    <a href="/listar_disciplinas">Voltar</a><br/>
+    <form>
+        <input id="campoNome" name="nome" type="text" placeholder="Nome" />
+        <input id="campoCargaHoraria" name="carga_horaria" type="number" placeholder="Carga horária" />
+        <input id="campoEmenta" name="ementa" type="text" placeholder="Ementa" />
+        <input id="btnCadastrar" type="button" value="Enviar" />
+    </form>
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+<script>
+    function disciplinaIncluida(retorno) {
+        if (retorno.resultado == "ok") { // a operação deu certo? 
+            // informar resultado de sucesso 
+            alert("Disciplina incluída com sucesso!");
+            // limpar os campos 
+            $("#campoNome").val("");
+            $("#campoCargaHoraria").val("");
+            $("#campoEmenta").val("");
+        } else {
+            // informar mensagem de erro 
+            alert(retorno.resultado + ":" + retorno.detalhes);
+        }
+    }
+
+    function erroAoIncluir(retorno) {
+        // informar mensagem de erro 
+        alert("ERRO: " + retorno.resultado + ":" + retorno.detalhes);
+    }
+</script>
+<script>
+    $(document).on("click", "#btnCadastrar", function () {
+        nome = $("#campoNome").val();
+        carga_horaria = $("#campoCargaHoraria").val();
+        ementa = $("#campoEmenta").val();
+        var dados = JSON.stringify({ nome: nome, carga_horaria: carga_horaria, ementa: ementa });
+        $.ajax({
+            url: 'http://127.0.0.1:5000/inserir_disciplina',
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: dados,
+            success: disciplinaIncluida,
+            error: erroAoIncluir
+        });
+    });
+</script>
+
+</html>

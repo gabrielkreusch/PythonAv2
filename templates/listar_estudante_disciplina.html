@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de disciplinas</title>
+</head>
+
+<body>
+    <table>
+        <thead>
+            <th>Estudante</th>
+            <th>Disciplina</th>
+            <th>Semestre</th>
+            <th>Média</th>
+            <th>Frequência</th>
+        </thead>
+        <tbody id="corpoTabelaEstudantesDisciplinas"></tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+            $.ajax({
+                url: 'http://127.0.0.1:5000/listar_estudante_disciplina_json',
+                method: 'GET',
+                dataType: 'json',
+                success: (estudantes_disciplinas) => {
+                    for (var i = 0; i < estudantes_disciplinas.length; i++) {
+                        $('#corpoTabelaEstudantesDisciplinas')
+                            .append(`<tr>
+                                        <td>${estudantes_disciplinas[i].pessoa.nome}</td>
+                                        <td>${estudantes_disciplinas[i].disciplina.nome}</td>
+                                        <td>${estudantes_disciplinas[i].semestre}</td>
+                                        <td>${estudantes_disciplinas[i].media_final}</td>
+                                        <td>${estudantes_disciplinas[i].frequencia}</td>
+                                    </tr>`);
+                    }
+                },
+                error: () => {
+                    alert("erro!")
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

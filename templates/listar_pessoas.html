@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de pessoas</title>
+</head>
+
+<body>
+    <a href="/cadastrar_pessoa">Cadastrar pessoa</a><br/>
+    <table>
+        <thead>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>E-mail</th>
+        </thead>
+        <tbody id="corpoTabelaPessoas"></tbody>
+    </table>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script>
+        $(function () {
+            $.ajax({
+                url: 'http://127.0.0.1:5000/listar_pessoas_json',
+                method: 'GET',
+                dataType: 'json',
+                success: (pessoas) => {
+                    for (var i = 0; i < pessoas.length; i++) {
+                        $('#corpoTabelaPessoas')
+                            .append(`<tr>
+                                        <td>${pessoas[i].nome}</td>
+                                        <td>${pessoas[i].cpf}</td>
+                                        <td>${pessoas[i].email}</td>
+                                    </tr>`);
+                    }
+                },
+                error: () => {
+                    alert("erro!")
+                }
+            });
+        });
+    </script>
+</body>
+</html>
